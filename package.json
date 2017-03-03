@@ -1,0 +1,9 @@
+{
+  "name": "gypo",
+  "version": "0.1.0",
+  "description": "A simple but structured logging library.",
+  "main": "index.js",
+  "repository": {},
+  "author": "Andrew Rothman",
+  "license": "MIT"
+}
