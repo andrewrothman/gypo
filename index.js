@@ -50,8 +50,8 @@ const createLogger = (stdout, stderr, tagValue) => {
     });
 
     logger.die = (...args) => {
-        logger.error.apply(args);
-        proccess.exit(1);
+        logger.error.apply(this, args);
+        process.exit(1);
     };
 
     logger.tag = tag => createLogger(logger.stdout, logger.stderr, tag);
