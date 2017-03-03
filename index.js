@@ -59,6 +59,9 @@ const createLogger = (stdout, stderr, tagValue) => {
     return logger;
 }
 
-const gypo = createLogger(value => console.log(value), value => console.error(value), undefined);
+const defaultStdout = value => console.log(value);
+const defaultStderr = value => console.error(value);
+
+const gypo = createLogger(defaultStdout, defaultStderr);
 
 module.exports.default = gypo;
