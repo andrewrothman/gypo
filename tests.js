@@ -95,4 +95,8 @@ tests(test => {
     test("tagged dies", "", "[test] oh the humanity", 1, gypo => {
         gypo.tag("test").die("oh the humanity");
     });
+
+    test("nested tags", "[db/connection] success!", "", false, gypo => {
+        gypo.tag("db").tag("connection").log("success!");
+    });
 });

@@ -37,15 +37,15 @@ const levels = [
     // NOTE: `die` is not listed here, as its implementation is somewhat different
 ]
 
-const createLogger = (stdout, stderr, tagValue) => {
+const createLogger = (stdout, stderr, tagList) => {
     let logger = {
-        tagValue,
+        tagList,
         stdout,
         stderr
     };
 
     levels.forEach(level => {
-        const tagStr = logger.tagValue !== undefined ? `[${logger.tagValue}] ` : "";
+        const tagStr = logger.tagList !== undefined ? `[${logger.tagList.join("/")}] ` : "";
         logger[level.name] = (...args) => logger[level.output](tagStr + allToString(args));
     });
 
@@ -54,7 +54,12 @@ const createLogger = (stdout, stderr, tagValue) => {
         process.exit(1);
     };
 
-    logger.tag = tag => createLogger(logger.stdout, logger.stderr, tag);
+    logger.tag = tag => {
+        let newTagList = logger.tagList !== undefined ? logger.tagList.slice() : [];
+        newTagList.push(tag);
+
+        return createLogger(logger.stdout, logger.stderr, newTagList);
+    }
 
     return logger;
 }
