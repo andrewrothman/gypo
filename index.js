@@ -2,40 +2,15 @@ const toString = obj => typeof obj === "string" ? obj : typeof obj === "object" 
 const allToString = all => all.map(toString).join(" ");
 
 const levels = [
-    {
-        name: "log",
-        output: "stdout"
-    },
-    {
-        name: "info",
-        color: "blue",
-        output: "stdout"
-    },
-    {
-        name: "error",
-        color: "red",
-        output: "stderr"
-    },
-    {
-        name: "debug",
-        output: "stdout"
-    },
-    {
-        name: "warn",
-        color: "yellow",
-        output: "stdout"
-    },
-    {
-        name: "success",
-        color: "green",
-        output: "stdout"
-    },
-    {
-        name: "trace",
-        output: "stdout"
-    }
+    { name: "log", output: "stdout" },
+    { name: "info", color: "blue", output: "stdout" },
+    { name: "error", color: "red", output: "stderr" },
+    { name: "debug", output: "stdout" },
+    { name: "warn", color: "yellow", output: "stdout" },
+    { name: "success", color: "green", output: "stdout" },
+    { name: "trace", output: "stdout" }
     // NOTE: `die` is not listed here, as its implementation is somewhat different
-]
+];
 
 const createLogger = (stdout, stderr, tagList) => {
     let logger = {
