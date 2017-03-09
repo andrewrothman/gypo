@@ -59,12 +59,21 @@ const tests = (setupTests) => {
     });
 };
 
+// ANSI color codes
+const colors = {
+    blue: "\x1b[36m",
+    yellow: "\x1b[33m",
+    red: "\x1b[31m",
+    green: "\x1b[32m",
+    reset: "\x1b[0m",
+};
+
 tests(test => {
     test("standard logging", "hey there!", "", false, gypo => {
         gypo.log("hey there!");
     });
 
-    test("error logging", "", "uh oh!", false, gypo => {
+    test("error logging", "", colors.red + "(error) uh oh!" + colors.reset, false, gypo => {
         gypo.error("uh oh!");
     });
 
@@ -72,31 +81,27 @@ tests(test => {
         gypo.tag("web").log("requested", "/cats/img/1.gif");
     });
 
-    test("tagged error logging", "", "[db] connection failed", false, gypo => {
+    test("tagged error logging", "", colors.red + "[db] (error) connection failed" + colors.reset, false, gypo => {
         gypo.tag("db").error("connection failed");
     });
 
-    test("tagged trace logging", "[db] ping took 100ms", "", false, gypo => {
+    test("tagged trace logging", "[db] (trace) ping took 100ms", "", false, gypo => {
         gypo.tag("db").trace("ping took 100ms");
     });
 
-    test("tagged error logging", "", "[db] insert failed", false, gypo => {
+    test("tagged error logging", "", colors.red + "[db] (error) insert failed" + colors.reset, false, gypo => {
         gypo.tag("db").error("insert failed");
     });
 
-    test("tagged error logging", "", "[db] insert failed", false, gypo => {
-        gypo.tag("db").error("insert failed");
-    });
-
-    test("dies", "", "oh the humanity", 1, gypo => {
+    test("dies", "", colors.red + "(die) oh the humanity" + colors.reset, 1, gypo => {
         gypo.die("oh the humanity");
     });
 
-    test("tagged dies", "", "[test] oh the humanity", 1, gypo => {
+    test("tagged dies", "", colors.red + "[test] (die) oh the humanity" + colors.reset, 1, gypo => {
         gypo.tag("test").die("oh the humanity");
     });
 
-    test("nested tags", "[db/connection] success!", "", false, gypo => {
-        gypo.tag("db").tag("connection").log("success!");
+    test("nested tags", colors.green + "[db/connection] (success) yay!" + colors.reset, "", false, gypo => {
+        gypo.tag("db").tag("connection").success("yay!");
     });
 });

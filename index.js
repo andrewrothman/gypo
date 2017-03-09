@@ -1,15 +1,24 @@
 const toString = obj => typeof obj === "string" ? obj : typeof obj === "object" ? JSON.stringify(obj) : new String(obj);
 const allToString = all => all.map(toString).join(" ");
 
+// ANSI color codes
+const colors = {
+    blue: "\x1b[36m",
+    yellow: "\x1b[33m",
+    red: "\x1b[31m",
+    green: "\x1b[32m",
+    reset: "\x1b[0m",
+};
+
 const levels = [
-    { name: "log", output: "stdout" },
+    { name: "log", output: "stdout", shouldHideLevel: true },
     { name: "info", color: "blue", output: "stdout" },
     { name: "error", color: "red", output: "stderr" },
+    { name: "die", color: "red", output: "stderr" },
     { name: "debug", output: "stdout" },
     { name: "warn", color: "yellow", output: "stdout" },
     { name: "success", color: "green", output: "stdout" },
     { name: "trace", output: "stdout" }
-    // NOTE: `die` is not listed here, as its implementation is somewhat different
 ];
 
 const createLogger = (stdout, stderr, tagList) => {
@@ -20,12 +29,16 @@ const createLogger = (stdout, stderr, tagList) => {
     };
 
     levels.forEach(level => {
+        const levelStr = !level.shouldHideLevel ? `(${level.name}) ` : "";
         const tagStr = logger.tagList !== undefined ? `[${logger.tagList.join("/")}] ` : "";
-        logger[level.name] = (...args) => logger[level.output](tagStr + allToString(args));
+        const colorize = val => level.color !== undefined ? colors[level.color] + val + colors.reset : val;
+        logger[level.name] = (...args) => logger[level.output](colorize(tagStr + levelStr + allToString(args)))
     });
 
+    const oldDie = logger.die;
+
     logger.die = (...args) => {
-        logger.error.apply(this, args);
+        oldDie(...args);
         process.exit(1);
     };
 
