@@ -9,7 +9,7 @@ const gypo = require("gypo").default
 
 // logs just like you're used to with console.log
 
-gypo.log("hey there!")
+gypo.log("hey there!")  
 gypo.error("uh oh!")
 
 // or optionally use tags to seperate components of your app
@@ -30,41 +30,30 @@ That's it!
 
 ### gypo
 
-### log(...args: string)
+log(...args: string)
 
-Logs out all arguments to stdout
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with no color
 
-#### info(...args: string)
+info(...args: string)
+debug(...args: string)
+warn(...args: string)
+success(...args: string)
+trace(...args: string)
 
-Logs out all arguments to stdout (with blue color)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with a cooresponding color
 
-#### error(...args: string)
+error(...args: string)
 
-Logs out all arguments to stderr (with red color)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with a cooresponding color
 
-### debug(...args: string)
+die(...args: string)
 
-Logs out all arguments to stdout
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stderr and then calls process.exit
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NOTE: this WILL exit your program
 
-## warn(...args: string)
+tag(tag: string): object
 
-Logs out all arguments to stdout (with yellow color)
-
-## success(...args: string)
-
-Logs out all arguments to stdout (with green color)
-
-### trace(...args: string)
-
-Logs out all arguments to stdout
-
-### die(...args: string)
-
-Logs out all arguments to stderr and then calls process.exit
-
-#### tag(tag: string): object
-
-Returns an object that has the same methods as the exported `gypo` object, but prepends all entries with a tag
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a tagged "sublogger". All logs will be prepended with a path to this logger.
 
 ## Extras
 
@@ -78,11 +67,27 @@ stderr(value: string): void
 If you use common tags, you can also be a little more concise:
 
 ```
-const webLog = gypo.tag("web")
-const dbLog = gypo.tag("db")
+const db = logger => {
+    connectToDatabase();
+    logger.info("connection successful");
+    ...
+};
 
-webLog.info("requested", "/cats/img/1.gif")
-dbLog.error("connection failed")
+const web = logger => {
+    serve();
+    logger.info("serving");
+    ...
+};
+
+
+const dbLogger = gypo.tag("db");
+const webLogger = gypo.tag("web");
+
+db(dbLogger);
+web(webLogger);
+
+// [db] connection successful
+// [web] serving
 ```
 
 Happy logging!
