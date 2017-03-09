@@ -57,13 +57,6 @@ tag(tag: string): object
 
 ## Extras
 
-If you'd like, you can set the `stdout` and `stderr` function on any gypo logger.They have the following function signatures:
-
-```
-stdout(value: string): void
-stderr(value: string): void
-```
-
 If you use common tags, you can also be a little more concise:
 
 ```
@@ -88,6 +81,13 @@ web(webLogger);
 
 // [db] connection successful
 // [web] serving
+```
+
+Also, if you'd like, you can set the `stdout` and `stderr` function on any gypo logger. They have the following function signatures:
+
+```
+stdout(value: string): void
+stderr(value: string): void
 ```
 
 Happy logging!
