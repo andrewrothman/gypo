@@ -57,4 +57,4 @@ const defaultStderr = value => console.error(value);
 
 const gypo = createLogger(defaultStdout, defaultStderr);
 
-module.exports.default = gypo;
+module.exports = gypo;

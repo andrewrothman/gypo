@@ -5,7 +5,7 @@ A simple but structured logging library.
 ```
 import gypo from "gypo"
 // or
-const gypo = require("gypo").default
+const gypo = require("gypo")
 
 // logs just like you're used to with console.log
 

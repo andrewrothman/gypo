@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "A simple but structured logging library.",
   "main": "index.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
   "types": "./index.d.ts",
   "author": "Andrew Rothman",
   "license": "MIT"
