@@ -32,7 +32,7 @@ const createLogger = (stdout, stderr, tagList) => {
         const levelStr = !level.shouldHideLevel ? `(${level.name}) ` : "";
         const tagStr = logger.tagList !== undefined ? `[${logger.tagList.join("/")}] ` : "";
         const colorize = val => level.color !== undefined ? colors[level.color] + val + colors.reset : val;
-        logger[level.name] = (...args) => logger[level.output](colorize(tagStr + levelStr + allToString(args)))
+        logger[level.name] = (...args) => logger[level.output](colorize(tagStr + levelStr + allToString(args).replace(/\n/g, "\n.. ")))
     });
 
     const oldDie = logger.die;
@@ -58,3 +58,5 @@ const defaultStderr = value => console.error(value);
 const gypo = createLogger(defaultStdout, defaultStderr);
 
 module.exports = gypo;
+
+gypo.log("this\nis\nmultiple\nlines");

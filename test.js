@@ -104,4 +104,8 @@ tests(test => {
     test("nested tags", colors.green + "[db/connection] (success) yay!" + colors.reset, "", false, gypo => {
         gypo.tag("db").tag("connection").success("yay!");
     });
+    
+    test("mulitple lines",  "this\n.. is\n.. multiple\n.. lines", "", false, gypo => {
+        gypo.log("this\nis\nmultiple\nlines");
+    });
 });
