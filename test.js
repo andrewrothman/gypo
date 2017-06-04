@@ -108,4 +108,10 @@ tests(test => {
     test("mulitple lines",  "this\n.. is\n.. multiple\n.. lines", "", false, gypo => {
         gypo.log("this\nis\nmultiple\nlines");
     });
+    
+    test("only shows enabled log levels", colors.yellow + "(warn) this should show up" + colors.reset, "", false, gypo => {
+        gypo.enabledLogLevels = ["warn"];
+        gypo.debug("this should not show up");
+        gypo.warn("this should show up");
+    });
 });

@@ -55,6 +55,33 @@ tag(tag: string): object
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a tagged "sublogger". All logs will be prepended with a path to this logger.
 
+## Filtering
+
+You can filter logs either in code or in the environment it is run in...
+
+```
+// any logger uses these log levels by default in production...
+gypo.enabledLogLevels = ["log", "info", "error", "die", "warn", "success"];
+// and all are shown in any other environment
+```
+
+In code you can also filter log levels by individual logger...
+
+```
+const logger1 = gypo.tag("only_warnings");
+logger1.enabledLogLevels = ["warn"];
+
+const logger2 = gypo.tag("only_errors_and_traces");
+logger2.enabledLogLevels = ["error", "trace"];
+```
+
+You may also globally filter log levels on the command line using an environment variable...
+
+```
+# replace `npm start` with however you start your program... or set the env var some other way
+GYPO_LOG_LEVELS_ENABLED=error,warn,debug npm start
+```
+
 ## Extras
 
 If you use common tags, you can also be a little more concise:

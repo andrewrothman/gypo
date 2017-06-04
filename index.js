@@ -24,18 +24,41 @@ const levels = [
     { name: "trace", output: "stdout" }
 ];
 
-const createLogger = (stdout, stderr, tagList) => {
+const getGloballyEnabledLogLevels = () => {
+    if (process.env["GYPO_LOG_LEVELS_ENABLED"] !== undefined) {
+        return process.env["GYPO_LOG_LEVELS_ENABLED"].split(",").map(entry => entry.trim());
+    }
+    else {
+        if (process.env.NODE_ENV === "production") {
+            return ["log", "info", "error", "die", "warn", "success"];
+        }
+        else {
+            return levels.map(level => level.name);
+        }
+    }
+};
+
+// returns true or false representing if the logger has the specified
+// log level enabled... environment variables take precedent
+const shouldLog = (level, enabledLogLevels) => enabledLogLevels.find(entry => entry === level) !== undefined && getGloballyEnabledLogLevels().find(entry => entry === level);
+
+const createLogger = (stdout, stderr, tagList, enabledLogLevels) => {
     let logger = {
         tagList,
         stdout,
-        stderr
+        stderr,
+        enabledLogLevels
     };
 
     levels.forEach(level => {
         const levelStr = !level.shouldHideLevel ? `(${level.name}) ` : "";
         const tagStr = logger.tagList !== undefined ? `[${logger.tagList.join("/")}] ` : "";
         const colorize = val => level.color !== undefined ? colors[level.color] + val + colors.reset : val;
-        logger[level.name] = (...args) => logger[level.output](colorize(tagStr + levelStr + allToString(args).replace(/\n/g, "\n.. ")));
+        logger[level.name] = (...args) => {
+            if (shouldLog(level.name, logger.enabledLogLevels)) {
+                logger[level.output](colorize(tagStr + levelStr + allToString(args).replace(/\n/g, "\n.. ")));
+            }
+        }
     });
 
     const oldDie = logger.die;
@@ -49,7 +72,7 @@ const createLogger = (stdout, stderr, tagList) => {
         let newTagList = logger.tagList !== undefined ? logger.tagList.slice() : [];
         newTagList.push(tag);
 
-        return createLogger(logger.stdout, logger.stderr, newTagList);
+        return createLogger(logger.stdout, logger.stderr, newTagList, enabledLogLevels);
     }
 
     return logger;
@@ -58,7 +81,7 @@ const createLogger = (stdout, stderr, tagList) => {
 const defaultStdout = value => console.log(value);
 const defaultStderr = value => console.error(value);
 
-const gypo = createLogger(defaultStdout, defaultStderr);
+const gypo = createLogger(defaultStdout, defaultStderr, undefined, getGloballyEnabledLogLevels());
 
 exports["default"] = gypo;
 module.exports = exports["default"];
