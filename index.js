@@ -83,5 +83,5 @@ const defaultStderr = value => console.error(value);
 
 const gypo = createLogger(defaultStdout, defaultStderr, undefined, getGloballyEnabledLogLevels());
 
-exports["default"] = gypo;
-module.exports = exports["default"];
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = gypo;

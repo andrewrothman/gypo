@@ -19,7 +19,7 @@ const tests = (setupTests) => {
     tests.forEach(test => {
         const {msg, expectedOut, expectedErr, expExitCode, code} = test;
 
-        const gypo = require("./");
+        const gypo = require("./").default;
 
         let stdout = "";
         let stderr = "";
