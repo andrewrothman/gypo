@@ -1,8 +1,16 @@
-1.3.2:
+0.5.1:
+
+* handle js error instances correctly and print stack trace
+
+0.3.3:
+
+* show standard javascript errors properly (todo)
+
+0.3.2:
 
 * fix exports
 
-1.3.1:
+0.3.1:
 
 * remove accidental test message displayed on import
 * fix TypeScript definition file

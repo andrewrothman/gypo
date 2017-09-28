@@ -1,7 +1,7 @@
 // gypo
 // Andrew Rothman
 
-const toString = obj => typeof obj === "string" ? obj : typeof obj === "object" ? JSON.stringify(obj) : new String(obj);
+const toString = obj => typeof obj === "string" ? obj : typeof obj === "object" ? obj instanceof Error ? obj.stack : JSON.stringify(obj) : new String(obj);
 const allToString = all => all.map(toString).join(" ");
 
 // ANSI color codes
