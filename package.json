@@ -4,7 +4,8 @@
   "description": "A simple structured events reporting library.",
   "main": "./src/index.js",
   "scripts": {
-    "test": "npx jest ."
+    "test": "npx jest .",
+    "build": "npx pack build"
   },
   "types": "./index.d.ts",
   "author": {
@@ -13,6 +14,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@pika/pack": "^0.3.4",
+    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-ts-standard-pkg": "^0.3.14",
     "@types/jest": "^24.0.6",
     "@types/node": "^11.9.4",
     "jest": "^24.1.0",
@@ -28,5 +32,15 @@
     "@types/chalk": "^2.2.0",
     "chalk": "^2.4.2",
     "fast-json-stringify": "^1.11.0"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+		"@pika/plugin-ts-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ]
+    ]
   }
 }
