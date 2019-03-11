@@ -1,0 +1,30 @@
+{
+	"defaultSeverity": "warn",
+	"extends": [
+		"tslint:recommended",
+		"tslint-config-prettier"
+	],
+	"jsRules": {},
+	"rules": {
+		"ordered-imports": false,
+		"interface-name": false,
+		"no-trailing-whitespace": [
+			false,
+			"ignore-blank-lines"
+		],
+		"object-literal-sort-keys": false,
+		"arrow-parens": false,
+		"one-line": false,
+		"member-access": false,
+		"no-var-requires": false,
+		"trailing-comma": false,
+		"max-line-length": false,
+		"max-classes-per-file": false,
+		"array-type": false,
+		"member-ordering": false,
+		"radix": false
+	},
+	"rulesDirectory": [
+		"tslint-plugin-prettier"
+	]
+}

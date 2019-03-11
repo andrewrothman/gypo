@@ -1,12 +1,32 @@
 {
   "name": "gypo",
-  "version": "0.5.1",
-  "description": "A simple but structured logging library.",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "A simple structured events reporting library.",
+  "main": "./src/index.js",
   "scripts": {
-    "test": "node ./test.js"
+    "test": "npx jest ."
   },
   "types": "./index.d.ts",
-  "author": "Andrew Rothman",
-  "license": "MIT"
+  "author": {
+    "name": "Andrew Rothman",
+    "url": "https://andrewrothman.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^24.0.6",
+    "@types/node": "^11.9.4",
+    "jest": "^24.1.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "@types/chalk": "^2.2.0",
+    "chalk": "^2.4.2",
+    "fast-json-stringify": "^1.11.0"
+  }
 }

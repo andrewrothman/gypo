@@ -1,122 +1,55 @@
 # Gypo
 
-A simple but structured logging library.
+A simple structured events reporting library.
 
-```
-import gypo from "gypo"
-// or
-const gypo = require("gypo")
+## What Are Structured Events?
 
-// logs just like you're used to with console.log
+Logs are great. They help developers figure out what's going on with their code. But as the world develops software with ever-growing complexity, its become clear that plain-text log files don't quite cut it when analyzing and understanding the internal state of software applications.
 
-gypo.log("hey there!")  
-gypo.error("uh oh!")
+## What is Gypo?
 
-// or optionally use tags to seperate components of your app
+Gypo is a structured events reporting format/library. Its format is extremely simple and standards compliant, thus fits very well in cross-platform deployments. It's initial implementation is in TypeScript, so it supports a rapidly-growing ecosystem of server-side Node.JS, web-based applications, edge-computing, and IOT environments.
 
-gypo.tag("web").log("requested", "/cats/img/1.gif")
-gypo.tag("db").error("connection failed")
+### Simple, Standards-Based Cross-Platform Format
 
-// filter by log level
-// `info`, `error`, `debug`, `warn`, `success`, `die`, and `trace`
+* Qualified and versioned, with heavily-documented format.
+* Plain [JSONL](http://jsonlines.org/) format supported in a wide-variety of programming environments.
+* Time represented in millisecond Unix epoch.
 
-gypo.tag("db").trace("ping took 100ms")
-gypo.tag("db").error("insert failed")
-```
+### Encourages Best Practices
 
-That's it!
+* Event data field is required, encouraging the developer to include relevant info.
+* Support for stdout/stderr.
+* UTF-8 file encoding (supports emojis and other unicode characters).
+* Production output optimization via `NODE_ENV` environment variable.
+* Standard color control environment variable [adherence](https://github.com/chalk/supports-color).
 
-## API
+### Small Log Output Size
 
-### gypo
+* Format specifies only bare-essential fields.
+* Millisecond Unix epoch time takes up a small amount of space for highly-accurate time-points.
+* Whitespace-free JSON string output in production.
 
-log(...args: string)
+### Fast Runtime Performance
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with no color
+* Observed throughput of ~62,000 events per second to stdout on a 2014 Intel i5 8GB MacBook Pro.
+* Non-blocking middleware support.
+* Millisecond Unix epoch number serialization and sorting are very performant.
+* Fast json stringifier.
+* Fast console output.
 
-info(...args: string)
-debug(...args: string)
-warn(...args: string)
-success(...args: string)
-trace(...args: string)
+### Configurable
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with a cooresponding color
+* Middleware.
 
-error(...args: string)
+### Great Developer Experience
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stdout with a cooresponding color
+* Easy development of tooling/middleware.
 
-die(...args: string)
+## What Tooling Is Available?
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logs out all arguments to stderr and then calls process.exit
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NOTE: this WILL exit your program
+* jq - Command-line JSON processor ([Homepage](https://stedolan.github.io/jq/)) ([GitHub](https://github.com/stedolan/jq))
 
-tag(tag: string): object
+## Is This Safe To Use In Production?
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a tagged "sublogger". All logs will be prepended with a path to this logger.
-
-## Filtering
-
-You can filter logs either in code or in the environment it is run in...
-
-```
-// any logger uses these log levels by default in production...
-gypo.enabledLogLevels = ["log", "info", "error", "die", "warn", "success"];
-// and all are shown in any other environment
-```
-
-In code you can also filter log levels by individual logger...
-
-```
-const logger1 = gypo.tag("only_warnings");
-logger1.enabledLogLevels = ["warn"];
-
-const logger2 = gypo.tag("only_errors_and_traces");
-logger2.enabledLogLevels = ["error", "trace"];
-```
-
-You may also globally filter log levels on the command line using an environment variable...
-
-```
-# replace `npm start` with however you start your program... or set the env var some other way
-GYPO_LOG_LEVELS_ENABLED=error,warn,debug npm start
-```
-
-## Extras
-
-If you use common tags, you can also be a little more concise:
-
-```
-const db = logger => {
-    connectToDatabase();
-    logger.info("connection successful");
-    ...
-};
-
-const web = logger => {
-    serve();
-    logger.info("serving");
-    ...
-};
-
-
-const dbLogger = gypo.tag("db");
-const webLogger = gypo.tag("web");
-
-db(dbLogger);
-web(webLogger);
-
-// [db] connection successful
-// [web] serving
-```
-
-Also, if you'd like, you can set the `stdout` and `stderr` function on any gypo logger. They have the following function signatures:
-
-```
-stdout(value: string): void
-stderr(value: string): void
-```
-
-Happy logging!
-<br />
-Andrew Rothman
+It should be. Its currently-used in a few production-critical applications, but its still a relatively young project.
