@@ -27,6 +27,23 @@ test("it reports 10,000 events", () => {
 	}
 });
 
+test("it reports an event with data", () => {
+	const logMock = jest.fn();
+	Gypo.logFunction = logMock;
+	
+	const event: GypoEvent = {
+		type: "my-event-type",
+		priority: GypoEventPriority.Info,
+		data: {
+			num: 123,
+		},
+	};
+	
+	Gypo.report(event);
+	
+	expect(logMock).toBeCalledWith(event);
+});
+
 test("it runs a simple middleware", () => {
 	const middlewareMock = jest.fn();
 	
