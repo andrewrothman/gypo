@@ -40,6 +40,7 @@ const gypoEventSchema = {
 		},
 		data: {
 			type: "object",
+			additionalProperties: true,
 		},
 	},
 };
