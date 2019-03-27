@@ -1,6 +1,6 @@
 {
   "name": "gypo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple structured events reporting library.",
   "main": "./src/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
   "@pika/pack": {
     "pipeline": [
       [
-		"@pika/plugin-ts-standard-pkg"
+        "@pika/plugin-ts-standard-pkg"
       ],
       [
         "@pika/plugin-build-node"
