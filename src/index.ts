@@ -4,6 +4,7 @@ const fastJson = require("fast-json-stringify");
 const DEFAULT_FORMAT_STRING: string = "gypo:v1";
 
 export enum GypoEventPriority {
+	Debug = "debug",
 	Info = "info",
 	Warn = "warn",
 	Error = "error",
@@ -153,6 +154,17 @@ class Gypo {
 				logFunc = console.log;
 			}
 		}
+		else if (event.priority === GypoEventPriority.Debug) {
+			logStr = isPretty ? chalk.cyan(unformattedLogStr) : unformattedLogStr;
+			
+			if (typeof process !== "undefined") {
+				logFunc = process.stdout.write.bind(process.stdout);
+			}
+			else {
+				// tslint:disable-next-line:no-console
+				logFunc = console.debug;
+			}
+		}
 		else if (event.priority === GypoEventPriority.Warn) {
 			logStr = isPretty ? chalk.yellow(unformattedLogStr) : unformattedLogStr;
 			
@@ -191,6 +203,13 @@ class Gypo {
 	 * @param event The event that took place.
 	 */
 	static report(event: GypoEvent) {
+		const isDevEnv: boolean = process.env.NODE_ENV === undefined || process.env.NODE_ENV === "" || process.env.NODE_ENV === "development";
+		
+		// silence debug messages outside of a dev environment
+		if (event.priority === GypoEventPriority.Debug && !isDevEnv) {
+			return;
+		}
+		
 		const reportedAt: Date = new Date();
 		event.time = Math.floor(reportedAt.getTime());
 		
