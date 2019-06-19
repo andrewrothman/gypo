@@ -220,6 +220,49 @@ class Gypo {
 		const hooks = [ ...(this.hooks[event.priority] || []), execLogFunction ];
 		this.runMiddlewares(hooks, event);
 	}
+	
+	/**
+	 * Report program startup.
+	 * @param data Extra data.
+	 * @param priority Event priority (default is Info).
+	 */
+	static reportStartup(data: unknown = {}, priority: GypoEventPriority = GypoEventPriority.Info): void {
+		Gypo.report({
+			type: "startup",
+			priority,
+			data,
+		});
+	}
+	
+	/**
+	 * Report program shutdown.
+	 * @param data Extra data.
+	 * @param priority Event priority (default is Info).
+	 */
+	static reportShutdown(data: unknown = {}, priority: GypoEventPriority = GypoEventPriority.Info): void {
+		Gypo.report({
+			type: "shutdown",
+			priority,
+			data,
+		});
+	}
+	
+	/**
+	 * Report an uncaught error.
+	 * @param e The uncaught error.
+	 */
+	static reportUncaughtError(e: Error): void {
+		Gypo.report({
+			type: "uncaught-error",
+			priority: GypoEventPriority.Error,
+			data: {
+				error: e,
+				name: e.name,
+				message: e.message,
+				stack: e.stack,
+			},
+		});
+	}
 }
 
 export default Gypo;
